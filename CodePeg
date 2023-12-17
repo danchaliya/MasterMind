@@ -1,0 +1,28 @@
+/**
+ * Author: Divesh Anchaliya
+ * Date: 11/27/23
+ * Filename:CodePeg.Java
+ * Class Description: The CodePeg class represents a single peg in the Mastermind game. Each peg is charaterized by a color.
+ */
+public class CodePeg {
+    private String color; //Variable to store the color of the peg
+
+    public CodePeg(String color) {
+        this.color = color;
+    } //Constructor to create a new codePeg with a specified color
+
+    public String getColor() {
+        return color;
+    } //Retrieves the color of the peg and returns the color of the peg
+
+    public void setColor(String color) {
+        this.color = color;
+    } //Sets or changes the color of the peg. The parameter, color, is the new color to be set for the peg.
+
+    @Override
+    public String toString() {
+        return color;
+    }
+}
+
+
