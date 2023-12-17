@@ -1,0 +1,35 @@
+/**
+ * Author: Divesh Anchaliya
+ * Date: 11/27/23
+ * Filename: ColorUtils.Java
+ * Class Description: The ColorUtils class manages color generation and console color format
+ */
+    public class ColorUtils {
+        // If ANSI codes are allowed for coloring in console
+        public static final String ANSI_RED = "\u001B[31m";
+        public static final String ANSI_GREEN = "\u001B[32m";
+        public static final String ANSI_YELLOW = "\u001B[33m";
+        public static final String ANSI_BLUE = "\u001B[34m";
+        public static final String ANSI_PURPLE = "\u001B[35m";
+        public static final String ANSI_GRAY = "\u001B[37m";
+        public static final String ANSI_RESET = "\u001B[0m";
+
+        public static String colorString(String color, String text) { //Returns a string with ANSI color codes uses parameter,color, which represents the color name and uses parameter text which represnets the text that needs to be colored. Returns a string containing the color text.
+            switch (color.toLowerCase()) {
+                case "red":
+                    return ANSI_RED + text + ANSI_RESET;
+                case "green":
+                    return ANSI_GREEN + text + ANSI_RESET;
+                case "yellow":
+                    return ANSI_YELLOW + text + ANSI_RESET;
+                case "blue":
+                    return ANSI_BLUE + text + ANSI_RESET;
+                case "purple":
+                    return ANSI_PURPLE + text + ANSI_RESET;
+                case "gray":
+                    return ANSI_GRAY + text + ANSI_RESET;
+                default:
+                    return text;
+            }
+        }
+    }
