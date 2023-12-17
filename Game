@@ -1,0 +1,85 @@
+/**
+ * Author: Divesh Anchaliya
+ * Data: 11/27/23
+ * Filename: Game.Java
+ * Class Description: The game class manages game logic, generates the secret code, processes guesses, and checks if the game is over.
+ */
+
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
+public class Game {
+    private ArrayList<CodePeg> secretCode; //Stores the secret combination of pegs
+    private ArrayList<ArrayList<CodePeg>> guesses; //Tracks all the guesses made by the player
+    private ArrayList<Feedback> feedbackHistory; //Keeps a record of feedback for each guess
+    private boolean cheatMode; //Indicates if the cheat mode is still active
+
+    public Game(boolean cheatMode) { //Constructor for the Game class. Initializes the game state and generalizes the secret code using a parameter, cheatMode, which if True is enabled.
+        this.cheatMode = cheatMode;
+        secretCode = new ArrayList<>();
+        guesses = new ArrayList<>();
+        feedbackHistory = new ArrayList<>();
+        generateSecretCode();
+        if (cheatMode) {
+            System.out.println("Cheat Mode ON: Secret code is " + secretCode);
+        }
+    }
+
+    private void generateSecretCode() { //Generates a random secret code composed of colored pegs
+        List<String> colors = List.of("red", "green", "yellow", "blue", "purple", "gray");
+        Random random = new Random();
+        for (int i = 0; i < 4; i++) {
+            secretCode.add(new CodePeg(colors.get(random.nextInt(colors.size()))));
+        }
+    }
+
+    public Feedback processGuess(ArrayList<CodePeg> guess) { //Processes the player's guess, and provides feedback. The parameter, guess,  represents the player's guess as an arraylist of codepegs and this methods returns feedback for the guess.
+        guesses.add(guess);
+        Feedback feedback = new Feedback();
+        boolean[] secretMatched = new boolean[4];
+        boolean[] guessMatched = new boolean[4];
+
+        for (int i = 0; i < 4; i++) { //Checks for hits
+            if (guess.get(i).getColor().equals(secretCode.get(i).getColor())) {
+                feedback.addHit();
+                secretMatched[i] = true;
+                guessMatched[i] = true;
+            }
+        }
+        for (int i = 0; i < 4; i++) { //Checks for partials
+            if (!guessMatched[i]) {
+                for (int j = 0; j < 4; j++) {
+                    if (!secretMatched[j] && guess.get(i).getColor().equals(secretCode.get(j).getColor())) {
+                        feedback.addPartial();
+                        secretMatched[j] = true;
+                        break;
+                    }
+                }
+            }
+        }
+        feedbackHistory.add(feedback);
+        return feedback;
+    }
+
+    public boolean isGameOver() { //Determines if the game is over and returns True if the game is over, otherwise returns false.
+        if (!feedbackHistory.isEmpty()) {
+            Feedback lastFeedback = feedbackHistory.get(feedbackHistory.size() - 1);
+            return lastFeedback.toString().equals("hhhh");
+
+        }
+        return false;
+    }
+
+        public void displayGameState() { //Displays the current game state, showing all guesses and their corresponding feedback
+            for (int i = 0; i < guesses.size(); i++) {
+                System.out.print("Guess " + (i + 1) + ": ");
+                for (CodePeg peg : guesses.get(i)) {
+                    System.out.print(peg.getColor() + " ");
+                }
+                System.out.println(" - Feedback: " + feedbackHistory.get(i));
+            }
+        }
+    }
