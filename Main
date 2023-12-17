@@ -1,0 +1,48 @@
+/**
+ * Author: Divesh Anchaliya
+ * Date: 11/27/23
+ * Filename: Main.Java
+ * Class Description:  The Main class starts the game and deals with user interactions.
+ */
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    private static final int Max_GUESSES = 10; // Maximum number of guesses allowed
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to Mastermind!");
+
+        System.out.print("Enable cheat mode? (y/n): "); //Prompt user to enable cheat mode
+        boolean cheatMode = scanner.nextLine().trim().equalsIgnoreCase("y");
+        Game game = new Game(cheatMode); // Create a new game instance
+        int guessCount = 0; //Counter for the number of guesses
+
+        while (!game.isGameOver() && guessCount < Max_GUESSES)  { // Game loop that continues until the game is over or max guesses
+            System.out.print("Enter your guess ( e.g., red green blue yellow ): (remember red green blue yellow gray purple)  ");
+            String[] colorInput = scanner.nextLine().trim().split(" ");
+            ArrayList<CodePeg> guess = new ArrayList<>();
+            for (String color : colorInput) { //Converts user input into list of CodePegs
+                guess.add(new CodePeg(color));
+            }
+            Feedback feedback = game.processGuess(guess); //Process the guess and provide feedback
+            guessCount++; // Increment guess count
+            System.out.println("Feedback: " + feedback);
+            game.displayGameState(); //Display current game state
+
+            if(guessCount >= Max_GUESSES) { //Checks if the max number of gueeses has been reached
+                System.out.println("You've reached the max number of guesses ");
+                break;
+            }
+        }
+        if(game.isGameOver()) { //Display the game outcome
+            System.out.println("Congrats, you have guessed the secret code!");
+        }else{
+            System.out.print("Game is over. You did not guess the secret code.");
+
+        }
+
+        scanner.close();
+    }
+
+        }
