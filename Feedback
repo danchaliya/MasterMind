@@ -1,0 +1,31 @@
+import java.util.List;
+import java.util.ArrayList;
+public class Feedback {
+    private int hits; //Counter for correct color and position
+    private int partials; //counter for correct color and wrong position
+
+    public Feedback() { //intilizes counters for hits and partials
+        this.hits = 0;
+        this.partials = 0;
+    }
+
+    public void addHit() { //increments the hit counter by 1
+        hits++;
+    }
+
+    public void addPartial(){ //increments partial counter by 1
+        partials++;
+    }
+
+@Override
+   public String toString() {
+       StringBuilder sb = new StringBuilder();
+       for (int i = 0; i < hits; i++) {
+           sb.append("h");//appends 'h' for every hit
+       }
+       for (int i = 0; i < partials; i++) {
+           sb.append("p"); //appends 'p' for every partial
+       }
+       return sb.toString(); //returns the constructed string
+   }
+}
